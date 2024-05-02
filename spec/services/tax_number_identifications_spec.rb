@@ -8,10 +8,10 @@ RSpec.describe TaxNumberIdentifications do
     context 'when supported country' do
       context 'when valid tin' do
         let(:country) { 'AU' }
-        let(:tin) { '12345678901' }
+        let(:tin) { '345678901' }
 
-        it 'returns TIN formatted NN NNN NNN NNN' do
-          expect(tax_number_identifications.for(tin_params).to_h).to eql(tin: '12 345 678 901')
+        it 'returns formatted TIN' do
+          expect(tax_number_identifications.for(tin_params).to_h).to eql(tin: '345 678 901')
         end
       end
 

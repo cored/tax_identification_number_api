@@ -2,21 +2,14 @@ require_relative 'abn'
 require_relative 'acn'
 
 module TaxNumberIdentifications
-  AU = Struct.new(:tin, keyword_init: true) do
+  module AU
     def self.from(tin)
-      raise InvalidTIN.new("invalid tin, correct TIN format NNNNNNNNN") unless tin =~ /\A\d{9}|\d{11}/
+      raise InvalidTIN.new("invalid tin: #{tin}") unless tin.match?(/^\d{9,11}$/)
+      return ACN.from(tin) if tin.length == 9
 
-      formatted_tin = if tin.length == 9
-        ACN.from(tin)
-      else
-        ABN.from(tin)
-      end
-
-      new(tin: formatted_tin.tin)
-    end
-
-    def to_h
-      { tin: tin }
+      abn = ABN.from(tin)
+      abn_query = AbnQuery.call(abn)
+      abn.with(abn_query)
     end
   end
 end

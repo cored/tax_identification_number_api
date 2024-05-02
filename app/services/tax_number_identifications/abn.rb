@@ -1,5 +1,5 @@
 module TaxNumberIdentifications
-  ABN = Struct.new(:tin, keyword_init: true) do
+  ABN = Struct.new(:tin, :extra_info, keyword_init: true) do
     WEIGHTS = [10, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19].freeze
 
     def self.from(tin)
@@ -14,8 +14,14 @@ module TaxNumberIdentifications
       new(tin: "#{abn_digits[0..1]} #{abn_digits[2..4]} #{abn_digits[5..7]} #{abn_digits[8..10]}")
     end
 
+    EXTRA_INFO_KEYS = %i[organisation_name address status].freeze
+    def with(abn_query)
+      self.class.new(tin: tin,
+                     extra_info: abn_query.to_h.slice(*EXTRA_INFO_KEYS))
+    end
+
     def to_h
-      { tin: tin }
+      { tin: tin }.merge({ extra_info: extra_info } || {})
     end
   end
 end

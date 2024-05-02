@@ -16,4 +16,19 @@ RSpec.describe TaxNumberIdentifications::ABN do
       end
     end
   end
+
+  describe "#with" do
+    context 'when the TIN is valid' do
+      let(:abn_query_data) { OpenStruct.new(address: 'Australia') }
+      let(:abn_query) { instance_double(TaxNumberIdentifications::AbnQuery, call: abn_query_data) }
+      let(:abn) { tin_abn.from('51824753556') }
+
+      it 'returns a TIN with extra information' do
+        expect(
+          abn.with(abn_query.call(abn)).to_h
+        ).to eq({ tin: '51 824 753 556',
+                  extra_info: { address: 'Australia' }})
+      end
+    end
+  end
 end
