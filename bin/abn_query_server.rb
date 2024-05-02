@@ -20,6 +20,15 @@ ABNS = {
       postcode: '2000'
     }
   },
+  '51824753556' => {
+    name: 'Example Company Pty Ltd',
+    gst: true,
+    effective_to: '2025-04-01',
+    address: {
+      state: 'NSW',
+      postcode: '2000'
+    }
+  },
   '10000000000' => {
     name: 'Example Company Pty Ltd 2',
     gst: false,
