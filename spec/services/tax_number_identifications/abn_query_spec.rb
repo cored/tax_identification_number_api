@@ -1,42 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe TaxNumberIdentifications::AbnQuery do
-	let(:http_client) { double("http_client") }
-	let(:abn) { TaxNumberIdentifications::ABN.new(tin: "1234567890") }
-	let(:response_body) do
-		<<-XML
-		<businessEntity>
-			<abn>1234567890</abn>
-			<status>Active</status>
-			<entityType>Company</entityType>
-			<organisationName>Test Company</organisationName>
-			<goodsAndServicesTax>true</goodsAndServicesTax>
-			<effectiveTo>2024-12-31</effectiveTo>
-			<address>
-				<stateCode>NSW</stateCode>
-				<postcode>2000</postcode>
-			</address>
-		</businessEntity>
-		XML
-	end
-	let(:response) { double("response", body: response_body) }
+	let(:abn) { TaxNumberIdentifications::ABN.new(tin: "51824753556") }
 
-	subject(:abn_query) { described_class.new(http_client: http_client) }
-
-	before do
-		allow(http_client).to receive(:get).and_return(response)
-	end
+	subject(:abn_query) { described_class }
 
 	describe ".call" do
-		context "when ABN is registered for GST" do
+		context "when ABN is registered for GST", :vcr do
 			it "returns parsed response" do
 				expect(abn_query.call(abn).to_h).to match(
-					abn: "1234567890",
+					abn: "51824753556",
 					status: "Active",
 					entity_type: "Company",
-					organisation_name: "Test Company",
+					organisation_name: "Example Company Pty Ltd",
 					goods_and_services_tax: true,
-					effective_to: "2024-12-31",
+					effective_to: "2025-04-01",
 					address: {
 						state_code: "NSW",
 						postcode: "2000"
@@ -45,23 +23,8 @@ RSpec.describe TaxNumberIdentifications::AbnQuery do
 			end
 		end
 
-		context "when ABN is not registered for GST" do
-			let(:response_body) do
-				<<-XML
-				<businessEntity>
-					<abn>1234567890</abn>
-					<status>Active</status>
-					<entityType>Company</entityType>
-					<organisationName>Test Company</organisationName>
-					<goodsAndServicesTax>false</goodsAndServicesTax>
-					<effectiveTo>2024-12-31</effectiveTo>
-					<address>
-						<stateCode>NSW</stateCode>
-						<postcode>2000</postcode>
-					</address>
-				</businessEntity>
-				XML
-			end
+		context "when ABN is not registered for GST", :vcr do
+			let(:abn) { TaxNumberIdentifications::ABN.new(tin: "51824753557") }
 
 			it "raises an InvalidTIN error" do
 				expect { abn_query.call(abn) }.to raise_error(TaxNumberIdentifications::InvalidTIN, "ABN is not registered for GST")

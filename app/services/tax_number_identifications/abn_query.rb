@@ -15,31 +15,35 @@ module TaxNumberIdentifications
 		def call(abn)
 			request(abn)
 			parse_response
-      validate_response!
-			parsed_response
 		end
 
 		private
 
-    def validate_response!
-      raise InvalidTIN.new("ABN is not registered for GST") unless parsed_response.goods_and_services_tax
-    end
-
-		def parse_response
-			xml_response = Nokogiri::XML(response.body)
-
-			@parsed_response = OpenStruct.new({
-				abn: xml_response.at_xpath("//businessEntity/abn").text,
-				status: xml_response.at_xpath("//businessEntity/status").text,
-				entity_type: xml_response.at_xpath("//businessEntity/entityType").text,
-				organisation_name: xml_response.at_xpath("//businessEntity/organisationName").text,
-				goods_and_services_tax: xml_response.at_xpath("//businessEntity/goodsAndServicesTax").text == "true",
-				effective_to: xml_response.at_xpath("//businessEntity/effectiveTo").text,
-				address: {
+		Response = Struct.new(:abn, :status, :entity_type, :organisation_name, :goods_and_services_tax, :effective_to, :address, keyword_init: true) do
+			def self.from_xml(xml_response)
+				abn = xml_response.at_xpath("//businessEntity/abn").text
+				status = xml_response.at_xpath("//businessEntity/status").text
+				entity_type = xml_response.at_xpath("//businessEntity/entityType").text
+				organisation_name = xml_response.at_xpath("//businessEntity/organisationName").text
+				goods_and_services_tax = xml_response.at_xpath("//businessEntity/goodsAndServicesTax").text == "true"
+				effective_to = xml_response.at_xpath("//businessEntity/effectiveTo").text
+				address = {
 					state_code: xml_response.at_xpath("//businessEntity/address/stateCode").text,
 					postcode: xml_response.at_xpath("//businessEntity/address/postcode").text
 				}
-			})
+				new(abn: abn,
+						status: status,
+						entity_type: entity_type,
+						organisation_name: organisation_name,
+						goods_and_services_tax: goods_and_services_tax,
+						effective_to: effective_to,
+						address: address)
+			rescue NoMethodError
+				raise InvalidTIN.new("ABN is not registered for GST")
+			end
+		end
+		def parse_response
+			Response.from_xml(Nokogiri::XML(response.body))
 		end
 
 		def request(abn)
