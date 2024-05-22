@@ -1,0 +1,38 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://localhost:8080/queryABN?abn=51%20824%20753%20556
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v2.9.0
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/xml
+      Server:
+      - WEBrick/1.8.1 (Ruby/3.3.0/2023-12-25)
+      Date:
+      - Wed, 22 May 2024 16:07:12 GMT
+      Content-Length:
+      - '635'
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: <?xml version="1.0" encoding="UTF-8"?><abn_response><request><identifiersearchrequest><abn>51
+        824 753 556</abn></identifiersearchrequest></request><response><dateRegisterLastUpdated>2024-04-01</dateRegisterLastUpdated><dateTimeRetrieved>2024-05-22T10:07:12-06:00</dateTimeRetrieved><businessEntity><abn>51
+        824 753 556</abn><status>Active</status><entityType>Company</entityType><organisationName>Example
+        Company Pty Ltd</organisationName><goodsAndServicesTax>true</goodsAndServicesTax><effectiveTo>2025-04-01</effectiveTo><address><stateCode>NSW</stateCode><postcode>2000</postcode></address></businessEntity></response></abn_response>
+  recorded_at: Wed, 22 May 2024 16:07:12 GMT
+recorded_with: VCR 6.2.0

@@ -21,5 +21,7 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
   gem 'rspec-rails', '~> 6.1.0'
-  gem 'pry-rails'
+  gem 'pry-rails', '~> 0.3.9'
+  gem 'vcr',  '~> 6.2.0'
+  gem 'webmock', '~> 3.14.0'
 end
