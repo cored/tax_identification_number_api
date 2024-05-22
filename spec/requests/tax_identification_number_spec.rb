@@ -1,9 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe "TaxIdentificationNumbers", type: :request do
-it "returns http success" do
-        post "/tax_identification_numbers", params: { country: "AU", tin: "51824753556" }
-        expect(response).to have_http_status(:success)
+  describe "POST /tax_identification_numbers", :vcr do
+    context "when country is supported" do
+    it "returns http success" do
+      post "/tax_identification_numbers", params: { country: "AU", tin: "51824753556" }
+      expect(response).to have_http_status(:success)
       end
 
       it "returns weather the TIN is valid" do
