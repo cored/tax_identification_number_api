@@ -1,9 +1,9 @@
 class TaxIdentificationNumbersController < ApplicationController
-rescue_from TaxNumberIdentifications::UnsupportedCountry, with: :unsupported_country
-rescue_from TaxNumberIdentifications::InvalidTIN, with: :invalid_tin
+  rescue_from Taxes::UnsupportedCountry, with: :unsupported_country
+  rescue_from Taxes::InvalidTIN, with: :invalid_tin
 
   def create
-    tin = TaxNumberIdentifications.for(tin_params)
+    tin = Taxes.for(tin_params)
 
     render json: { success: true }.merge(tin.to_h), status: :ok
   end
