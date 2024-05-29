@@ -23,14 +23,14 @@ http_interactions:
       Server:
       - WEBrick/1.8.1 (Ruby/3.3.0/2023-12-25)
       Date:
-      - Wed, 22 May 2024 16:56:21 GMT
+      - Wed, 29 May 2024 21:20:01 GMT
       Content-Length:
       - '629'
       Connection:
       - Keep-Alive
     body:
       encoding: UTF-8
-      string: <?xml version="1.0" encoding="UTF-8"?><abn_response><request><identifiersearchrequest><abn>51824753556</abn></identifiersearchrequest></request><response><dateRegisterLastUpdated>2024-04-01</dateRegisterLastUpdated><dateTimeRetrieved>2024-05-22T10:56:21-06:00</dateTimeRetrieved><businessEntity><abn>51824753556</abn><status>Active</status><entityType>Company</entityType><organisationName>Example
+      string: <?xml version="1.0" encoding="UTF-8"?><abn_response><request><identifiersearchrequest><abn>51824753556</abn></identifiersearchrequest></request><response><dateRegisterLastUpdated>2024-04-01</dateRegisterLastUpdated><dateTimeRetrieved>2024-05-29T15:20:01-06:00</dateTimeRetrieved><businessEntity><abn>51824753556</abn><status>Active</status><entityType>Company</entityType><organisationName>Example
         Company Pty Ltd</organisationName><goodsAndServicesTax>true</goodsAndServicesTax><effectiveTo>2025-04-01</effectiveTo><address><stateCode>NSW</stateCode><postcode>2000</postcode></address></businessEntity></response></abn_response>
-  recorded_at: Wed, 22 May 2024 16:56:21 GMT
+  recorded_at: Wed, 29 May 2024 21:20:01 GMT
 recorded_with: VCR 6.2.0
